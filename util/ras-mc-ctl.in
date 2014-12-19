@@ -318,7 +318,7 @@ sub guess_vendor_model_dmidecode {
     while (<DMI>) {
         $line++;
 
-        /^(\s*)(board|base board|system) information/i || next LINE;
+        /^(\s*)(system|board|base board) information/i || next LINE;
         my $indent = $1;
 	my $type = $2;
 
@@ -349,8 +349,11 @@ sub guess_vendor_model_sysfs {
     #
     #  Try to look up DMI information in sysfs
     #
-    open (VENDOR, "/sys/class/dmi/id/board_vendor") or return undef;
-    open (MODEL,  "/sys/class/dmi/id/board_name")   or return undef;
+    #open (VENDOR, "/sys/class/dmi/id/board_vendor") or return undef;
+    open (VENDOR, "/sys/class/dmi/id/sys_vendor") or return undef;
+    
+    #open (MODEL,  "/sys/class/dmi/id/board_name")   or return undef;
+    open (MODEL, "/sys/class/dmi/id/product_name") or return undef;
 
     my ($vendor, $model) = (<VENDOR>, <MODEL>);
 
